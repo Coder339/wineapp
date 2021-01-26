@@ -50,15 +50,15 @@ export const fonts = {
 
 
 // import { API_URL } from 'react-native-dotenv'
-// export default AppConstant = {
+export default AppConstant = {
     // API_URL: API_URL,
-    // token:'',
+    token:'',
     // terms : `https://app.smartgiveaways.app/Pages/terms/en`,
     // privacy : `https://app.smartgiveaways.app/pages/Policy/en`,
     // content : `https://app.smartgiveaways.app/pages/content/en`,
     // aboutUs : `https://app.smartgiveaways.app/pages/about/en`
 
-// }
+}
 
 
 
@@ -105,6 +105,8 @@ export const activeIce = <Image source={require('../assets/images/ice.png')} sty
 export const inactiveIce = <Image source={require('../assets/images/ice.png')} style={iconImage}/>
 export const activeFavItem = <Image source={require('../assets/images/activestar.png')} style={iconImage}/>
 export const inactiveFavItem = <Image source={require('../assets/images/star.png')} style={iconImage}/>
+export const buy = <Image source={require('../assets/images/buy.png')} style={{width:scaleWidth('8.5%'),height:scaleWidth('8.5%')}}/>
+
 
 export const forgotpassword = 'Forgot Password'
 export const forgot_password_desc = "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout."

@@ -5,7 +5,7 @@ import ImageContainer from '../components/common/imagecontainer';
 import { TextInput } from 'react-native-gesture-handler';
 import { useSelector, useDispatch } from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
-// import AppConstant from '../assets/globalstyleconstants'
+import AppConstant from '../assets/globalstyleconstants'
 import { SignIn, clearAction } from '../redux/actions/action';
 import { encrypter, scaleHeight, moderateScale, scaleWidth } from '../assets/globalstylefunctions';
 import { LOGIN_FAILURE, LOGIN_SUCCESS, LOADER } from '../redux/actions/type';
@@ -13,6 +13,7 @@ import validate from '../config/validations';
 import {colors, loginBackground,user,lock,eyeoff,eyeon,logo_global,fonts} from '../assets/globalstyleconstants';
 import AppButton from '../components/appbutton';
 import Loader from '../components/common/loader';
+import {setData} from '../config/storage';
 
 export default function Login() {
     const state = useSelector(state => state).reducer;
@@ -40,8 +41,10 @@ export default function Login() {
             // toast.show(state.message)
         }
         else if (state.case === LOGIN_SUCCESS) {
-            // AppConstant.token = state.userData.Token;
-            // setData('userData',JSON.stringify(state.userData))
+            console.log('userdata',state.userData)
+            AppConstant.token = state.userData; // as of now only token inside userdata
+            console.log('appconst',AppConstant.token)
+            setData('userToken',JSON.stringify(state.userData))
             dispatch(clearAction())
             // Actions.reset('Tabbar')
             navigation.replace('App')
@@ -78,7 +81,7 @@ export default function Login() {
             // device_token: token,
             // device_info: Platform.OS.toUpperCase() + ' Device'
         }
-        console.log('console1',dispatch(SignIn(formdata)))
+        
         dispatch(SignIn(formdata));
 
     }
@@ -129,7 +132,7 @@ export default function Login() {
                 text='LOGIN' 
                 style={styles.loginButton} 
                 textStyle={{color:colors.wine1}}
-                onPress={()=>Login()}
+                onPress={Login}
             />
             <View style={{flexDirection:'row',marginBottom:scaleWidth('2%')}}>
                 <Text style={{color:colors.white}}>Dont have account ? </Text>

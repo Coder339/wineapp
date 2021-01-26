@@ -6,6 +6,7 @@ import AppButton from './appbutton'
 import { colors, fonts } from '../assets/globalstyleconstants'
 import WineModal from './winemodal'
 import Fav from './common/fav'
+import { Bar } from 'react-native-progress';
 
 const Item = ({item,index}) => {
     const [modalVisible, setModalVisible] = useState(false);
@@ -26,6 +27,16 @@ const Item = ({item,index}) => {
                         style={styles.image}
                     />
                 </TouchableOpacity>
+                <View style={styles.barContainer}>
+                    <Bar 
+                    progress={0.4} 
+                    width={scaleWidth('60%')} 
+                    color={colors.wine1} 
+                    unfilledColor={colors.white} 
+                    borderWidth={0} 
+                    animationType={'timing'} 
+                    />
+                </View>
                 <View style={styles.buttonContainer}>
                     <AppButton 
                        text='Buy' 
@@ -90,6 +101,11 @@ const styles = StyleSheet.create({
         borderRadius:moderateScale(5),
         marginHorizontal:scaleWidth('3%'),
         marginVertical:moderateScale(8)
+    },
+    barContainer:{
+        width:'100%',
+        alignItems:'center',
+        marginVertical:scaleWidth('2%')
     },
 
 })

@@ -4,13 +4,9 @@ import {
     LOADER, 
     LOGIN_SUCCESS, 
     CLEAR_DATA, 
-    GET_FAQ_SUCCESS, 
-    UPDATE_PROFILE_SUCCESS, 
-    ALREADY_LOGIN, 
-    SOCIAL_LOGIN, 
-    VERYFY_OTP_SUCCESS, 
-    SOCIAL_LOGIN_SUCCESS, 
-    LOGOUT } from '../actions/type';
+    LOGOUT, 
+    GET_PRODUCTS_SUCCESS,
+    GET_PRODUCTS_FAILURE} from '../actions/type';
 // import Appconstant from '../../components/constant/index';
 
 export default reducer = (state = initialState, action) => {
@@ -42,14 +38,6 @@ export default reducer = (state = initialState, action) => {
                 MyChampaignList:'',
                 Winners:'',
             }
-        case ALREADY_LOGIN:
-            return {
-                ...state,
-                case: '',
-                message: '',
-                userData: action.payload,
-
-            }
         case LOGIN_SUCCESS:
             return {
                 ...state,
@@ -58,53 +46,19 @@ export default reducer = (state = initialState, action) => {
                 message: action.message,
 
             }
-        case SOCIAL_LOGIN_SUCCESS:
-            return {
-                ...state,
-                userData: action.payload,
-                case: action.type,
-                message: action.message,
-
-            }
-        case VERYFY_OTP_SUCCESS:
-            return {
-                ...state,
-                userData: action.payload,
-                case: action.type,
-                message: action.message,
-
-            }
-        case SOCIAL_LOGIN:
-            return {
-                ...state,
-                userData: action.payload,
-                case: action.type,
-                message: action.message,
-
-            }
-        case GET_FAQ_SUCCESS:
+        case GET_PRODUCTS_SUCCESS:
             return {
                 ...state,
                 case: action.type,
-                message: action.message,
-                FAQs: action.payload,
+                products: action.payload,
 
             }
-        case UPDATE_PROFILE_SUCCESS:
+        case GET_PRODUCTS_FAILURE:
             return {
                 ...state,
                 case: action.type,
-                message: action.message,
-                userData: action.payload,
 
             }
-        // case MY_CHAMPAIGN_LIST_SUCCESS:
-        //     return {
-        //         ...state,
-        //         case: action.type,
-        //         message: action.message,
-        //         MyChampaignList: action.payload,
-        //     }
 
         default:
             return {

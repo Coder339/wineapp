@@ -3,7 +3,6 @@ import React from 'react';
 // import { colors } from '../assets/globalstyleconstants';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import { StyleSheet, Text, View,Image } from 'react-native'
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import {
@@ -23,10 +22,7 @@ import TermsOfService from '../screens/menu/termsofservice';
 import PrivacyPolicy from '../screens/menu/privacypolicy';
 import Logout from '../screens/menu/logout';
 import Animate from '../screens/animate';
-import Profile from '../screens/profile';
-import Inbox from '../screens/inbox';
 import Listing from '../screens/listing';
-import Notification from '../screens/notification';
 import { 
   activeHome, 
   inactiveHome, 
@@ -39,6 +35,10 @@ import {
   inactiveCart, 
   activeIce,
   inactiveIce} from '../assets/globalstyleconstants';
+import Cart from '../screens/cart';
+import Favourites from '../screens/favourites';
+import Categories from '../screens/categories';
+import Settings from '../screens/settings';
 
 const Stack = createStackNavigator();  // Testing as of now. 
 
@@ -87,7 +87,7 @@ export function AuthStack() {
     );
   }
 
-  export function BookMarkStack({route,navigation}) {
+  export function HomeStack({route,navigation}) {
 
     return (
       <Stack.Navigator
@@ -107,19 +107,19 @@ export function AuthStack() {
   export function HomeTabs() {
     return (
       <Tab.Navigator
-        initialRouteName="Bookmark"
+        initialRouteName="Home"
         screenOptions={({ route }) => ({
           headerShown: false,
           tabBarIcon: ({ color,focused }) => {
-            if (route.name === 'Bookmark') {
+            if (route.name === 'Home') {
               return focused ? activeHome : inactiveHome
-            } else if (route.name === 'Notification') {
+            } else if (route.name === 'Favourites') {
               return focused ? activeFav : inactiveFav
-            } else if (route.name === 'Profile') {
+            } else if (route.name === 'Categories') {
               return focused ? activeIce : inactiveIce
-            } else if (route.name === 'Inbox') {
+            } else if (route.name === 'Settings') {
               return focused ? activeSettings : inactiveSettings
-            }else if (route.name === 'Current Listing') {
+            }else if (route.name === 'Cart') {
               return focused ? activeCart : inactiveCart
             }
           },
@@ -132,11 +132,11 @@ export function AuthStack() {
         }}
         
       >
-        <Tab.Screen name="Bookmark" component={BookMarkStack} />
-        <Tab.Screen name="Notification" component={Notification}/>
-        <Tab.Screen name="Profile" component={Profile}/>
-        <Tab.Screen name="Inbox" component={Inbox} />
-        <Tab.Screen name="Current Listing" component={Listing} />
+        <Tab.Screen name="Home" component={HomeStack} />
+        <Tab.Screen name="Favourites" component={Favourites}/>
+        <Tab.Screen name="Categories" component={Categories}/>
+        <Tab.Screen name="Settings" component={Settings} />
+        <Tab.Screen name="Cart" component={Cart} />
       </Tab.Navigator>
     );
   }

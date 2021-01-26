@@ -1,10 +1,10 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 
-export default function Notification() {
+export default function FullModel() {
     return (
-        <View>
-            <Text>Notification</Text>
+        <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+            <Text>Full</Text>
         </View>
     )
 }

@@ -2,7 +2,7 @@ import React,{useState, useEffect} from 'react';
 import { StyleSheet, Text, View ,FlatList} from 'react-native';
 import { moderateScale } from '../assets/globalstylefunctions';
 
-export default function Inbox() {
+export default function Settings() {
     const [data, setData] = useState(null)
     const [isLoading, setLoading] = useState(true);
 

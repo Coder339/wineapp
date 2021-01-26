@@ -12,14 +12,13 @@ export default function WineModal(props) {
             animationType="slide"
             transparent={true}
             visible={modalVisible}
-            onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-            }}
+            onRequestClose={onPress}
         >
-            
-            <TouchableOpacity
+            <View style={styles.shadow} onTouchStart={onPress}/>
+
+            <View
                 style={styles.modalView}
-                onPress={onPress}
+                // onPress={onPress}
                 >
 
                 <Text style={styles.modalText}>{item.title}</Text>
@@ -32,7 +31,7 @@ export default function WineModal(props) {
                     <Text style={styles.detailText}>{detailText}</Text>
                 </View>
 
-            </TouchableOpacity>
+            </View>
             <PaymentCard text='Proceed To Pay'/>
             
         </Modal>
@@ -56,7 +55,18 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
-        elevation: 5
+        elevation: 5,
+    },
+    shadow: {
+        position:'absolute',
+        top:0,
+        bottom:0,
+        left:0,
+        right:0,
+        justifyContent: 'center',
+        alignItems: 'center',
+        flex: 1,
+        backgroundColor: '#rgba(0,0,0,0.6)'
     },
     modalText: {
         // marginBottom: 15,
