@@ -122,7 +122,8 @@ const styles = StyleSheet.create({
     container:{
         // flexGrow:1,
         backgroundColor:colors.white,
-        alignItems:'center'
+        alignItems:'center',
+        height:scaleHeight('100%')
     },
     logo:{
         fontFamily:fonts.FasterOneRegular,

@@ -1,5 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, View,Image } from 'react-native'
+import { scaleHeight, scaleWidth } from '../../assets/globalstylefunctions'
 
 export default function ImageContainer(props) {
     const {image} = props
@@ -14,8 +15,8 @@ export default function ImageContainer(props) {
 const styles = StyleSheet.create({
     backImage:{
         resizeMode:'cover',
-        width:'100%',
-        height:'100%',
+        width:scaleWidth('100%'),
+        height:scaleHeight('100%'),
         position:'absolute',
         top:0,
         bottom:0,

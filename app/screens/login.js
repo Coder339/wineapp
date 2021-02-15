@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react'
-import { StyleSheet, Text, View,TouchableOpacity,Image } from 'react-native'
+import { StyleSheet, Text, View,TouchableOpacity,Image,Alert } from 'react-native'
 import ScrollContainer from '../components/common/scrollcontainer';
 import ImageContainer from '../components/common/imagecontainer';
 import { TextInput } from 'react-native-gesture-handler';
@@ -9,21 +9,32 @@ import AppConstant from '../assets/globalstyleconstants'
 import { SignIn, clearAction } from '../redux/actions/action';
 import { encrypter, scaleHeight, moderateScale, scaleWidth } from '../assets/globalstylefunctions';
 import { LOGIN_FAILURE, LOGIN_SUCCESS, LOADER } from '../redux/actions/type';
-import validate from '../config/validations';
-import {colors, loginBackground,user,lock,eyeoff,eyeon,logo_global,fonts} from '../assets/globalstyleconstants';
+import regexEmail from '../config/validations';
+import {colors, loginBackground,user,lock,eyeoff,eyeon,logo_global,fonts,checkcircle} from '../assets/globalstyleconstants';
 import AppButton from '../components/appbutton';
 import Loader from '../components/common/loader';
 import {setData} from '../config/storage';
+import * as Animatable from 'react-native-animatable';
+import {useNetInfo} from "@react-native-community/netinfo";
 
 export default function Login() {
     const state = useSelector(state => state).reducer;
 
-    const [username,setUsername] = useState('')
-    const [password,setPassword] = useState('')
-    const [defaultValue,setDefaultValue] = useState('123456789')
-    const [token, setToken] = useState('');
-    const [isHidden,setisHidden] = useState(false)
-    const [isVisible,setIsVisible] = useState(false)
+    const netInfo = useNetInfo();
+
+    const [data,setUserData] = useState({
+        username:'',
+        password:'',
+        isHidden:false,
+        isValidUser:true,
+        isValidPassword:true,
+        isVisible:false,
+        check_textInputChange:false
+    })
+    // const [username,setUsername] = useState('')
+    // const [password,setPassword] = useState('')
+    // const [isHidden,setisHidden] = useState(false)
+    // const [isVisible,setIsVisible] = useState(false)
     
     const navigation = useNavigation();
 
@@ -33,10 +44,14 @@ export default function Login() {
     useEffect(() => {
         console.log('statecon',state.case)
         if (state.case === LOADER) {
-            setIsVisible(true)
+            setUserData({...data,isVisible:true})
+            // setIsVisible(true)
             // toast.show(state.message)
         }
         if (state.case === LOGIN_FAILURE) {
+            Alert.alert('Wrong Input!', 'Username or password does not matched.', [
+                {text: 'Okay'}
+            ]);
             dispatch(clearAction())
             // toast.show(state.message)
         }
@@ -53,11 +68,45 @@ export default function Login() {
     }, [state])
 
     const usernameHandler=(text)=>{
-        setUsername(text)
+        // setUserData({...data,username:text})
+        const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{3,}))$/;
+        if( re.test(text.trim())) {
+            setUserData({
+                ...data,
+                username: text.trim(),
+                check_textInputChange: true,
+                isValidUser: true
+            });
+        } else {
+            setUserData({
+                ...data,
+                username: text.trim(),
+                check_textInputChange: false,
+                isValidUser: false
+            });
+        }
     }
     const passwordHandler=(text)=>{
-        setPassword(text)
+        // setUserData({...data,password:text})
+        if( text.trim().length >= 6 ) {
+            setUserData({
+                ...data,
+                password: text.trim(),
+                isValidPassword: true
+            });
+        } else {
+            setUserData({
+                ...data,
+                password: text.trim(),
+                isValidPassword: false
+            });
+        }
     }
+
+    const HiddenHandler=()=>{
+        setUserData({...data,isHidden:!data.isHidden})
+    }
+
 
     const Login = () => {
 
@@ -74,34 +123,69 @@ export default function Login() {
         // else if (password === '') {
         //     // return toast.show('password is blank')
         // }
+
         var formdata = {
-            email: username,
-            password: password,
+            email: data.username,
+            password: data.password,
             // device_type: Platform.OS === 'ios' ? 1 : 2,
             // device_token: token,
             // device_info: Platform.OS.toUpperCase() + ' Device'
         }
+
+        if ( data.username.length == 0 || data.password.length == 0 ) {
+            Alert.alert('Wrong Input!', 'Username or password field cannot be empty.', [
+                {text: 'Okay'}
+            ]);
+            return;
+        }
+
+        {netInfo.isConnected ?
+
+            dispatch(SignIn(formdata))
+            :
+            Alert.alert('Network issue :(', 'Please Check Your Network !', [
+                {text: 'Okay'}
+            ]);
+        }
         
-        dispatch(SignIn(formdata));
 
     }
     return (
+        
         <ScrollContainer style={styles.container}>
             <Loader visible={state.loading}/>
             <ImageContainer image={loginBackground}/>
             <Text style={styles.logo}>W I N E D R U M</Text>
             <View style={styles.loginContainer}>
-                <View>
-                    <Text style={styles.label}>Username</Text>
+                
+                <Text style={styles.label}>Username</Text>
+                <View style={{...styles.user,...styles.inputBorder}}>
                     <TextInput
-                      placeholder='john wick'
-                      underlineColorAndroid='transparent'
-                      placeholderTextColor={colors.white}
-                      onChangeText={usernameHandler}
-                      value={username}
-                      style={{...styles.input,...styles.inputBorder}}
+                    placeholder='john wick'
+                    underlineColorAndroid='transparent'
+                    placeholderTextColor={colors.white}
+                    onChangeText={usernameHandler}
+                    value={data.username}
+                    style={{...styles.input,width:'90%'}}
                     />
+                    <Animatable.View 
+                        animation='flash' 
+                        duration={500}
+                        >
+                        <Image
+                            source={data.check_textInputChange && checkcircle} 
+                            style={styles.checkCircle}
+                        />
+                    </Animatable.View>
                 </View>
+                {!data.isValidUser &&
+                    <Animatable.View 
+                        animation='fadeInLeft' 
+                        duration={500}
+                        >
+                        <Text style={styles.errorMsg}>Provided email is invalid</Text>
+                    </Animatable.View>
+                }
                 <View style={{marginTop:moderateScale(5)}}>
                     <Text style={styles.label}>Password</Text>
                     <View style={{...styles.user,...styles.inputBorder}}>
@@ -110,18 +194,28 @@ export default function Login() {
                         underlineColorAndroid='transparent'
                         placeholderTextColor={colors.white}
                         onChangeText={passwordHandler}
-                        value={password}
+                        value={data.password}
                         style={{...styles.input,width:'90%'}}
-                        secureTextEntry={isHidden}
+                        secureTextEntry={data.isHidden}
                         />
                         <TouchableOpacity 
                             style={{}} 
-                            onPress={()=>setisHidden(!isHidden)}>
+                            onPress={HiddenHandler}>
                             <Image
-                              source={isHidden ? eyeoff : eyeon} 
-                              style={styles.eye}/>
+                            source={data.isHidden ? eyeoff : eyeon} 
+                            style={styles.eye}/>
                         </TouchableOpacity>
                     </View>
+                </View>
+                <View style={styles.errorContainer}>
+                    {!data.isValidPassword &&
+                        <Animatable.View 
+                            animation='fadeInLeft' 
+                            duration={500}
+                            >
+                            <Text style={styles.errorMsg}>Provided password is invalid</Text>
+                        </Animatable.View>
+                    }
                     <Text 
                         style={styles.forgot} 
                         onPress={()=>alert('forgot password')}>Forgot Password ? 
@@ -139,6 +233,7 @@ export default function Login() {
                 <Text style={styles.register} onPress={()=>navigation.navigate('Signup')}>Register</Text>
             </View>
         </ScrollContainer>
+        
     )
 }
 
@@ -146,7 +241,8 @@ const styles = StyleSheet.create({
     container:{
         // flexGrow:1,
         backgroundColor:colors.white,
-        alignItems:'center'
+        alignItems:'center',
+        height:scaleHeight('100%')
     },
     logo:{
         fontFamily:fonts.FasterOneRegular,
@@ -175,6 +271,10 @@ const styles = StyleSheet.create({
         fontSize:scaleWidth('4%'),
         fontFamily:fonts.MontserratBold,
     },
+    checkCircle:{
+        width:scaleWidth('4.5%'),
+        height:scaleWidth('4.5%')
+    },
     user:{
         flexDirection:'row',
         alignItems:'center',
@@ -194,6 +294,17 @@ const styles = StyleSheet.create({
     },
     register:{
         color:colors.wine1,
-        fontWeight:'bold'
+        fontWeight:'bold',
     },
+    errorMsg:{
+        fontFamily:fonts.MontserratRegular,
+        color:colors.wine1,
+        fontSize:scaleWidth('3%'),
+    },
+    errorContainer:{
+        flexDirection:'row',
+        justifyContent:'space-between',
+        alignItems:'center',
+
+    }
 })
