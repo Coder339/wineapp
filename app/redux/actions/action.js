@@ -1,6 +1,7 @@
 import React from 'react';
 import {
     LOGIN,
+    SOCIAL_LOGIN,
     SIGNUP,
     CLEAR_DATA,
     LOGOUT,
@@ -13,6 +14,9 @@ export const clearAction = payload => {
 }
 export const SignIn = payload => {
     return { type: LOGIN, payload }
+}
+export const SocialSignIn = payload => {
+    return { type: SOCIAL_LOGIN, payload }
 }
 export const SignUp = payload => {
     return { type: SIGNUP, payload }

@@ -3,6 +3,7 @@ import initialState from "./initialState";
 import { 
     LOADER, 
     LOGIN_SUCCESS, 
+    SOCIAL_LOGIN_SUCCESS,
     CLEAR_DATA, 
     LOGOUT, 
     GET_PRODUCTS_SUCCESS,
@@ -39,6 +40,14 @@ export default reducer = (state = initialState, action) => {
                 Winners:'',
             }
         case LOGIN_SUCCESS:
+            return {
+                ...state,
+                userData: action.payload,
+                case: action.type,
+                message: action.message,
+
+            }
+        case SOCIAL_LOGIN_SUCCESS:
             return {
                 ...state,
                 userData: action.payload,

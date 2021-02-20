@@ -49,6 +49,7 @@ export default function API(variable, method, parameter, formdata, media) {
                     body: res
                 }
                 console.log('APIresponse : ', JSON.stringify(data))
+                
 
                 if (variable === 'auth/login') {
                     return data

@@ -1,21 +1,22 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState,useEffect} from 'react';
 import { StyleSheet, Text, View,TouchableOpacity,Image,Alert } from 'react-native'
 import ScrollContainer from '../components/common/scrollcontainer';
 import ImageContainer from '../components/common/imagecontainer';
 import { TextInput } from 'react-native-gesture-handler';
 import { useSelector, useDispatch } from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
-import AppConstant from '../assets/globalstyleconstants'
-import { SignIn, clearAction } from '../redux/actions/action';
+import AppConstant, { googleLogo,colors, loginBackground,user,lock,eyeoff,eyeon,logo_global,fonts,checkcircle } from '../assets/globalstyleconstants'
+import { SignIn, SocialSignIn,clearAction } from '../redux/actions/action';
 import { encrypter, scaleHeight, moderateScale, scaleWidth } from '../assets/globalstylefunctions';
-import { LOGIN_FAILURE, LOGIN_SUCCESS, LOADER } from '../redux/actions/type';
+import { LOGIN_FAILURE, LOGIN_SUCCESS, LOADER, SOCIAL_LOGIN_SUCCESS, SOCIAL_LOGIN_FAILURE } from '../redux/actions/type';
 import regexEmail from '../config/validations';
-import {colors, loginBackground,user,lock,eyeoff,eyeon,logo_global,fonts,checkcircle} from '../assets/globalstyleconstants';
 import AppButton from '../components/appbutton';
 import Loader from '../components/common/loader';
 import {setData} from '../config/storage';
 import * as Animatable from 'react-native-animatable';
 import {useNetInfo} from "@react-native-community/netinfo";
+import { GoogleSignin } from '@react-native-community/google-signin';
+import auth from '@react-native-firebase/auth';
 
 export default function Login() {
     const state = useSelector(state => state).reducer;
@@ -29,7 +30,8 @@ export default function Login() {
         isValidUser:true,
         isValidPassword:true,
         isVisible:false,
-        check_textInputChange:false
+        check_textInputChange:false,
+        isGoogleLogo:false,
     })
     // const [username,setUsername] = useState('')
     // const [password,setPassword] = useState('')
@@ -42,14 +44,14 @@ export default function Login() {
     // const { signIn } = useContext(AuthContext);
 
     useEffect(() => {
-        console.log('statecon',state.case)
+        console.log('statecon',state.message)
         if (state.case === LOADER) {
             setUserData({...data,isVisible:true})
             // setIsVisible(true)
             // toast.show(state.message)
         }
-        if (state.case === LOGIN_FAILURE) {
-            Alert.alert('Wrong Input!', 'Username or password does not matched.', [
+        else if (state.case === LOGIN_FAILURE) {
+            Alert.alert('ATTENTION !', state.message, [
                 {text: 'Okay'}
             ]);
             dispatch(clearAction())
@@ -63,6 +65,22 @@ export default function Login() {
             dispatch(clearAction())
             // Actions.reset('Tabbar')
             navigation.replace('App')
+        }
+        else if (state.case === SOCIAL_LOGIN_SUCCESS) {
+            console.log('userdata',state.userData)
+            AppConstant.token = state.userData.user.uid; // as of now only googleToken inside userdata
+            console.log('appconst',AppConstant.token)
+            setData('userToken',JSON.stringify(state.userData.user.uid))
+            dispatch(clearAction())
+            // Actions.reset('Tabbar')
+            navigation.replace('App')
+        }
+        else if (state.case === SOCIAL_LOGIN_FAILURE) {
+            Alert.alert('ATTENTION !', state.message, [
+                {text: 'Okay'}
+            ]);
+            dispatch(clearAction())
+            // toast.show(state.message)
         }
 
     }, [state])
@@ -105,6 +123,12 @@ export default function Login() {
 
     const HiddenHandler=()=>{
         setUserData({...data,isHidden:!data.isHidden})
+    }
+
+    const onGoogleButtonPress=()=> {
+
+        
+        dispatch(SocialSignIn())
     }
 
 
@@ -228,10 +252,30 @@ export default function Login() {
                 textStyle={{color:colors.wine1}}
                 onPress={Login}
             />
-            <View style={{flexDirection:'row',marginBottom:scaleWidth('2%')}}>
+            <View style={{flexDirection:'row'}}>
                 <Text style={{color:colors.white}}>Dont have account ? </Text>
                 <Text style={styles.register} onPress={()=>navigation.navigate('Signup')}>Register</Text>
             </View>
+            <Text style={styles.googleText}>OR</Text>
+            {data.isGoogleLogo &&
+
+                <Animatable.View 
+                    animation='fadeInLeft' 
+                    duration={500}
+                    >    
+                    <TouchableOpacity onPress={onGoogleButtonPress}>
+                        {googleLogo}
+                    </TouchableOpacity>
+                </Animatable.View>
+            }
+            {!data.isGoogleLogo &&
+
+                <TouchableOpacity 
+                  onPress={()=>setUserData({...data,isGoogleLogo:!data.isGoogleLogo})}
+                  style={styles.googleTextContainer}>
+                    <Text style={styles.googleText}>Sign in with Google</Text>
+                </TouchableOpacity>
+            }
         </ScrollContainer>
         
     )
@@ -258,7 +302,8 @@ const styles = StyleSheet.create({
     input:{
         // backgroundColor:'rgba(255,255,255,0.3)',
         color:colors.white,
-        fontFamily:fonts.MontserratRegular
+        fontFamily:fonts.MontserratRegular,
+        height:scaleHeight('7%')
     },
     forgot:{
         color:colors.white,
@@ -290,7 +335,7 @@ const styles = StyleSheet.create({
         height:scaleHeight('8%'),
         borderRadius:moderateScale(5),
         backgroundColor:colors.whiteFade,  
-        marginTop:scaleHeight('42%'),
+        marginTop:scaleHeight('32%'),
     },
     register:{
         color:colors.wine1,
@@ -306,5 +351,13 @@ const styles = StyleSheet.create({
         justifyContent:'space-between',
         alignItems:'center',
 
+    },
+    googleTextContainer:{
+        alignItems:'center'
+    },
+    googleText:{
+        marginVertical:scaleHeight('1%'),
+        color:colors.white,
+        fontFamily:fonts.MontserratBoldItalic,
     }
 })

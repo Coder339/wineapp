@@ -6,6 +6,7 @@ import {useNavigation} from '@react-navigation/native';
 import { logoutAction } from '../../redux/actions/action';
 import AsyncStorage from '@react-native-community/async-storage';
 import Loader from '../../components/common/loader';
+import { GoogleSignin } from '@react-native-community/google-signin';
 
 export default function Logout() {
     const state = useSelector(state => state).reducer;
@@ -26,6 +27,8 @@ export default function Logout() {
                 text: 'OK', 
                 onPress: async () => {
                   dispatch(logoutAction())
+                  await GoogleSignin.revokeAccess();
+                  await GoogleSignin.signOut();
                   removeData('userToken')
                   navigation.replace('Auth')
                 }
@@ -34,6 +37,17 @@ export default function Logout() {
             { cancelable: false }
           );
     }
+
+    // signOut = async () => {
+    //   try {
+    //     await GoogleSignin.revokeAccess();
+    //     await GoogleSignin.signOut();
+    //     removeData('userToken')
+    //   } catch (error) {
+    //     alert('first login')
+    //     console.error(error);
+    //   }
+    // }
 
     useEffect(() => {
         
@@ -48,11 +62,13 @@ export default function Logout() {
     return (
         <View>
             <Button title='logout' onPress={logoutHanlder}/>
+            {/* <Button title='Glogout' onPress={()=>signOut()}/> */}
         </View>
     )
     
 
     }
+  
 
 
 const styles = StyleSheet.create({})

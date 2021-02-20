@@ -62,7 +62,7 @@ export default AppConstant = {
 
 
 
-export const loginBackground = require('./images/wine.jpeg')
+export const loginBackground = require('./images/twoglasses.jpeg')
 // export const ageBackground = require('./images/bg-android/age_bg.png')
 // export const interestsBackground = require('./images/bg-android/interests_bg.png')
 // export const collegeBackground = require('./images/bg-android/collage_bg.png')
@@ -106,7 +106,9 @@ export const activeIce = <Image source={require('../assets/images/ice.png')} sty
 export const inactiveIce = <Image source={require('../assets/images/ice.png')} style={iconImage}/>
 export const activeFavItem = <Image source={require('../assets/images/activestar.png')} style={iconImage}/>
 export const inactiveFavItem = <Image source={require('../assets/images/star.png')} style={iconImage}/>
+
 export const buy = <Image source={require('../assets/images/buy.png')} style={{width:scaleWidth('8.5%'),height:scaleWidth('8.5%')}}/>
+export const googleLogo = <Image source={require('../assets/images/google.png')} style={{width:scaleWidth('10.5%'),height:scaleWidth('10.5%')}}/>
 
 
 export const forgotpassword = 'Forgot Password'
