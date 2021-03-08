@@ -19,7 +19,7 @@ export default function API(variable, method, parameter, formdata, media) {
 
         var headers =  {
             // 'token': `${AppConstant.token}`,
-            'Authorization': `Bearer ${AppConstant.token}`,
+            'Authorization': `Bearer ${AppConstant.token}`,   // how we can structure the token format for googleToken
             'Content-Type': 'application/json',
             "Accept": "application/json",
             // "X-Requested-With": "XMLHttpRequest",

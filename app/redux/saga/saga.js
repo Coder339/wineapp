@@ -71,7 +71,7 @@ export function* socialSignIn(payload) {
   const googleCred = yield GoogleAuth()
 
   if (googleCred){
-    googleToken = googleCred.user.uid
+    googleToken = googleCred
 
     if (googleToken) {
       console.log('googleToken',googleToken)

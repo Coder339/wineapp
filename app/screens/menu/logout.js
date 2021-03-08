@@ -27,8 +27,8 @@ export default function Logout() {
                 text: 'OK', 
                 onPress: async () => {
                   dispatch(logoutAction())
-                  await GoogleSignin.revokeAccess();
-                  await GoogleSignin.signOut();
+                  // await GoogleSignin.revokeAccess();    // check condition for google also keep the googleToken and apply the condition.
+                  // await GoogleSignin.signOut();
                   removeData('userToken')
                   navigation.replace('Auth')
                 }

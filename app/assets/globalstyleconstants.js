@@ -17,6 +17,7 @@ export const colors = {
     whiteFade:'rgba(255,255,255,0.3)',
     gray:'gray',
     THEME:'#F51142',
+    chat:'#D5D5D5',
     
 }
 

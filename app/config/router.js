@@ -34,13 +34,17 @@ import {
   activeCart, 
   inactiveCart, 
   activeIce,
-  inactiveIce} from '../assets/globalstyleconstants';
+  inactiveIce,
+  fonts} from '../assets/globalstyleconstants';
 import Cart from '../screens/cart';
 import Favourites from '../screens/favourites';
 import Categories from '../screens/categories';
 import Settings from '../screens/settings';
 import OnboardingScreen from '../screens/onboarding';
 import { GoogleSignin } from '@react-native-community/google-signin';
+import MessageScreen from '../screens/menu/messagescreen';
+import ChatScreen from '../screens/menu/chatscreen';
+import CreateChatRoom from '../screens/menu/createchatroom';
 
 const Stack = createStackNavigator();  // Testing as of now. 
 
@@ -96,104 +100,149 @@ export function AuthStack() {
   }
 
 
-  export function MenuStack({route,navigation}) {
+export function MessageStack({route,navigation}) {
 
-    return (
-      <Drawer.Navigator 
-          initialRouteName="HomeTabs" 
-          drawerPosition='right'
-          drawerStyle={{
-            // activeTintColor:colors.appColor,
-            // activeBackgroundColor:colors.appColor
-            // width: 240,
-          }}
-          >
-          <Drawer.Screen name="HomeTabs" component={HomeTabs} />
-          <Drawer.Screen name="Faq" component={Faq} />
-          <Drawer.Screen name="ContactUs" component={ContactUs} />
-          <Drawer.Screen name="Refer" component={Refer} />
-          <Drawer.Screen name="Rewards" component={Rewards} />
-          <Drawer.Screen name="TermsOfService" component={TermsOfService} />
-          <Drawer.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
-          <Drawer.Screen name="Logout" component={Logout} />
-        </Drawer.Navigator>
-    );
-  }
+  return (
+    <Stack.Navigator
+      mode='modal'
+      initialRouteName="MessageScreen"
+      screenOptions={{
+        // headerShown: false
+        headerStyle: {
+          backgroundColor: '#000',
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+          fontFamily:fonts.FasterOneRegular,
+        },
+      }}
+    >
+      {/* <Stack.Screen 
+        name="CreateChatScreen" 
+        component={CreateChatRoom}
+        options={{ 
+          title: 'Enter   Chat   Room', 
+        }} 
+      /> */}
+      <Stack.Screen 
+        name="MessageScreen" 
+        component={MessageScreen}
+        options={{ 
+          title: 'ChatWindow', 
+        }} 
+      />
+      <Stack.Screen 
+        name="ChatScreen" 
+        component={ChatScreen} 
+        options={({ route }) => ({ 
+          title: route.params.userName, 
+        })} 
+      />
+    </Stack.Navigator>
+  );
+}
 
-  export function HomeStack({route,navigation}) {
+export function MenuStack({route,navigation}) {
 
-    return (
-      <Stack.Navigator
-        mode='modal'
-        initialRouteName="Landing"
-        screenOptions={{
-          headerShown: false
+  return (
+    <Drawer.Navigator 
+        initialRouteName="HomeTabs" 
+        drawerPosition='right'
+        drawerStyle={{
+          // activeTintColor:colors.appColor,
+          // activeBackgroundColor:colors.appColor
+          // width: 240,
         }}
-      >
-        <Stack.Screen name="Landing" component={Listing}/>
-        {/* <RootStack.Screen name="Menu" component={MenuStack}/> */}
-      </Stack.Navigator>
-    );
-  }
+        >
+        <Drawer.Screen name="HomeTabs" component={HomeTabs} />
+        <Drawer.Screen name="Message" component={MessageStack} />
+        <Drawer.Screen name="Faq" component={Faq} />
+        <Drawer.Screen name="ContactUs" component={ContactUs} />
+        <Drawer.Screen name="Refer" component={Refer} />
+        <Drawer.Screen name="Rewards" component={Rewards} />
+        <Drawer.Screen name="TermsOfService" component={TermsOfService} />
+        <Drawer.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
+        <Drawer.Screen name="Logout" component={Logout} />
+      </Drawer.Navigator>
+  );
+}
+
+export function HomeStack({route,navigation}) {
+
+  return (
+    <Stack.Navigator
+      mode='modal'
+      initialRouteName="Landing"
+      screenOptions={{
+        headerShown: false
+      }}
+    >
+      <Stack.Screen name="Landing" component={Listing}/>
+      {/* <RootStack.Screen name="Menu" component={MenuStack}/> */}
+    </Stack.Navigator>
+  );
+}
 
 
-  export function HomeTabs() {
-    return (
-      <Tab.Navigator
-        initialRouteName="Home"
-        screenOptions={({ route }) => ({
-          headerShown: false,
-          tabBarIcon: ({ color,focused }) => {
-            if (route.name === 'Home') {
-              return focused ? activeHome : inactiveHome
-            } else if (route.name === 'Favourites') {
-              return focused ? activeFav : inactiveFav
-            } else if (route.name === 'Categories') {
-              return focused ? activeIce : inactiveIce
-            } else if (route.name === 'Settings') {
-              return focused ? activeSettings : inactiveSettings
-            }else if (route.name === 'Cart') {
-              return focused ? activeCart : inactiveCart
-            }
-          },
-        })}
-        tabBarOptions={{
-          activeTintColor: colors.appColor,
-          inactiveTintColor: 'gray',
-          keyboardHidesTabBar:true,
-          showLabel:false
-        }}
-        
-      >
-        <Tab.Screen name="Home" component={HomeStack} />
-        <Tab.Screen name="Favourites" component={Favourites}/>
-        <Tab.Screen name="Categories" component={Categories}/>
-        <Tab.Screen name="Settings" component={Settings} />
-        <Tab.Screen name="Cart" component={Cart} />
-      </Tab.Navigator>
-    );
-  }
+export function HomeTabs() {
+  return (
+    <Tab.Navigator
+      initialRouteName="Home"
+      screenOptions={({ route }) => ({
+        headerShown: false,
+        tabBarIcon: ({ color,focused }) => {
+          if (route.name === 'Home') {
+            return focused ? activeHome : inactiveHome
+          } else if (route.name === 'Favourites') {
+            return focused ? activeFav : inactiveFav
+          } else if (route.name === 'Categories') {
+            return focused ? activeIce : inactiveIce
+          } else if (route.name === 'Settings') {
+            return focused ? activeSettings : inactiveSettings
+          }else if (route.name === 'Cart') {
+            return focused ? activeCart : inactiveCart
+          }
+        },
+      })}
+      tabBarOptions={{
+        activeTintColor: colors.appColor,
+        inactiveTintColor: 'gray',
+        keyboardHidesTabBar:true,
+        showLabel:false
+      }}
+      
+    >
+      <Tab.Screen name="Home" component={HomeStack} />
+      <Tab.Screen name="Favourites" component={Favourites}/>
+      <Tab.Screen name="Categories" component={Categories}/>
+      <Tab.Screen name="Settings" component={Settings} />
+      <Tab.Screen name="Cart" component={Cart} />
+    </Tab.Navigator>
+  );
+}
 
 
-  export default function RootStackScreen(){
+export default function RootStackScreen(){
 
-    return(
-      <Stack.Navigator initialRouteName="SplashScreen">
-        <Stack.Screen
-          name="SplashScreen"
-          component={Splash}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="Auth"
-          component={AuthStack}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="App"
-          component={MenuStack}
-          options={{headerShown: false}}
-        />
-      </Stack.Navigator>
-    )
-  };
+  return(
+    <Stack.Navigator initialRouteName="SplashScreen">
+      <Stack.Screen
+        name="SplashScreen"
+        component={Splash}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Auth"
+        component={AuthStack}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="App"
+        component={MenuStack}
+        options={{headerShown: false}}
+      />
+    </Stack.Navigator>
+  )
+};
+
+

@@ -43,12 +43,18 @@ export default function Login() {
     const dispatch = useDispatch();
     // const { signIn } = useContext(AuthContext);
 
+    
     useEffect(() => {
         console.log('statecon',state.message)
         if (state.case === LOADER) {
             setUserData({...data,isVisible:true})
             // setIsVisible(true)
             // toast.show(state.message)
+            // setTimeout(()=>{
+            //     dispatch(clearAction())
+            //     setUserData({...data,isVisible:false})
+            //     alert('please check your connection')
+            // },10000)
         }
         else if (state.case === LOGIN_FAILURE) {
             Alert.alert('ATTENTION !', state.message, [
@@ -68,9 +74,9 @@ export default function Login() {
         }
         else if (state.case === SOCIAL_LOGIN_SUCCESS) {
             console.log('userdata',state.userData)
-            AppConstant.token = state.userData.user.uid; // as of now only googleToken inside userdata
+            AppConstant.token = state.userData; // as of now only googleToken inside userdata
             console.log('appconst',AppConstant.token)
-            setData('userToken',JSON.stringify(state.userData.user.uid))
+            setData('userToken',JSON.stringify(state.userData))
             dispatch(clearAction())
             // Actions.reset('Tabbar')
             navigation.replace('App')
@@ -128,7 +134,7 @@ export default function Login() {
     const onGoogleButtonPress=()=> {
 
         
-        dispatch(SocialSignIn())
+        // dispatch(SocialSignIn())
     }
 
 

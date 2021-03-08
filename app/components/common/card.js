@@ -6,7 +6,7 @@ import { verticalScale,moderateScale, scaleHeight } from '../../assets/globalsty
 
 const Card = (props) => {
     return (
-        <View style={{...styles.card, ...props.style,}}>
+        <View style={{...styles.card, ...props.style,}} {...props}>
             {props.children}
         </View>
     );
@@ -15,11 +15,11 @@ const Card = (props) => {
 
 const styles = StyleSheet.create({
     card: {
-        flex:1,
-        shadowColor: 'black',
-        shadowOffset: { width: 0, height: verticalScale(7) },
-        shadowRadius: 9.11,
-        shadowOpacity: 0.41,
+        // flex:1,
+        // shadowColor: 'black',
+        // shadowOffset: { width: 0, height: verticalScale(7) },
+        // shadowRadius: 9.11,
+        // shadowOpacity: 0.41,
         // elevation: 30,
         // backgroundColor: '#fff',
         // padding: scaleHeight('2%'),

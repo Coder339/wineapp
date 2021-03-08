@@ -92,19 +92,19 @@ const Landing = () => {
                 volume={10}
             />
         </View>
-      <MediaControls
-        duration={duration}
-        isLoading={isLoading}
-        mainColor="#333"
-        onFullScreen={onFullScreen}
-        onPaused={onPaused}
-        onReplay={onReplay}
-        onSeek={onSeek}
-        onSeeking={onSeeking}
-        playerState={playerState}
-        progress={currentTime}
-        toolbar={renderToolbar()}
-      />
+        <MediaControls
+          duration={duration}
+          isLoading={isLoading}
+          mainColor="#333"
+          onFullScreen={onFullScreen}
+          onPaused={onPaused}
+          onReplay={onReplay}
+          onSeek={onSeek}
+          onSeeking={onSeeking}
+          playerState={playerState}
+          progress={currentTime}
+          toolbar={renderToolbar()}
+        />
     </View>
   );
 };
