@@ -33,10 +33,6 @@ export default function Login() {
         check_textInputChange:false,
         isGoogleLogo:false,
     })
-    // const [username,setUsername] = useState('')
-    // const [password,setPassword] = useState('')
-    // const [isHidden,setisHidden] = useState(false)
-    // const [isVisible,setIsVisible] = useState(false)
     
     const navigation = useNavigation();
 
@@ -69,7 +65,6 @@ export default function Login() {
             console.log('appconst',AppConstant.token)
             setData('userToken',JSON.stringify(state.userData))
             dispatch(clearAction())
-            // Actions.reset('Tabbar')
             navigation.replace('App')
         }
         else if (state.case === SOCIAL_LOGIN_SUCCESS) {

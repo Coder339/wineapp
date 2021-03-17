@@ -64,6 +64,7 @@ export default AppConstant = {
 
 
 export const loginBackground = require('./images/twoglasses.jpeg')
+export const errorImage = require('./images/imgerror.png')
 // export const ageBackground = require('./images/bg-android/age_bg.png')
 // export const interestsBackground = require('./images/bg-android/interests_bg.png')
 // export const collegeBackground = require('./images/bg-android/collage_bg.png')

@@ -32,7 +32,7 @@ export function* SignIn() {
 export function* signIn(payload) {
 
   yield put({ type: LOADER, loading: true })
-  const res = yield API('auth/login', 'POST', payload.payload);
+  const res = yield API('user/login', 'POST', payload.payload);
   if (res.status === 200) {
     let resp = res.body.access_token;
     if (resp) {
@@ -100,7 +100,7 @@ export function* SignUp() {
 }
 export function* signUp(payload) {
   yield put({ type: LOADER, loading: true })
-  const res = yield API('auth/register', 'POST', payload.payload);
+  const res = yield API('user/register', 'POST', payload.payload);
   if (res.status === 200) {
     let resp = res.body;
     if (resp.Status === 200) {
@@ -134,7 +134,7 @@ export function* GetProducts(){
 export function* getProducts(payload){
   console.log('tesssssssss')
   // yield put({type:LOADER,loading:true})
-  const res = yield API('products','GET')
+  const res = yield API('product','GET')
   console.log(res,'ressp')
   if(res){
     yield put({ type: LOADER, loading: false })

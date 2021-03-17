@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useEffect,useState} from 'react'
 import { StyleSheet, Text, View ,Modal,TouchableOpacity,Alert,Image,TouchableWithoutFeedback} from 'react-native'
 import { scaleHeight, moderateScale, scaleWidth } from '../assets/globalstylefunctions';
 import { colors, fonts, detailText } from '../assets/globalstyleconstants';
@@ -7,6 +7,21 @@ import PaymentCard from './common/payment';
 
 export default function WineModal(props) {
     const {modalVisible,onPress,item} = props
+    const [image,setImage] = useState('')
+
+    function arrayBufferToBase64(buffer) {
+        var binary = '';
+        var bytes = [].slice.call(new Uint8Array(buffer));
+        bytes.forEach((b) => binary += String.fromCharCode(b));
+        return window.btoa(binary);
+    };
+
+    useEffect(() => {
+        var base64Flag = 'data:png/jpeg;base64,';
+        var imageStr = arrayBufferToBase64(item.img.data.data);
+        setImage(base64Flag+imageStr)
+
+    }, [])
     return (
         <Modal
             animationType="slide"
@@ -23,7 +38,7 @@ export default function WineModal(props) {
 
                 <Text style={styles.modalText}>{item.title}</Text>
                 <Image 
-                    source={{uri:item.image}} 
+                    source={{uri:image}} 
                     style={styles.image}
                 />
                 <View style={styles.detailContainer}>
@@ -76,7 +91,7 @@ const styles = StyleSheet.create({
     },
     image:{
         // width:scaleWidth('100%'),
-        backgroundColor:'red',
+        backgroundColor:colors.wine1,
         width:scaleWidth('80%'),
         height:scaleHeight('25%'),
         marginTop:scaleHeight('2%')

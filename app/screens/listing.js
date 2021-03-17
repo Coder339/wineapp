@@ -1,6 +1,5 @@
 import React,{useEffect,useState} from 'react'
 import { StyleSheet, Text, View,FlatList } from 'react-native'
-import data from '../config/dummydata.json';
 import WineItem from "../components/wineitem";
 import { colors, loginBackground } from '../assets/globalstyleconstants';
 import ImageContainer from '../components/common/imagecontainer';
@@ -20,7 +19,7 @@ export default function Listing() {
     const navigation = useNavigation();
 
     const [productData, setProductData] = useState(null)
-    const [isVisible,setIsVisible] = useState(null)
+    const [isVisible,setIsVisible] = useState(true)
 
 
     const seprator=()=>{
@@ -50,7 +49,7 @@ export default function Listing() {
             // toast.show(state.message)
             console.log('products...',state.products.body)
             setProductData(state.products.body)
-            console.log('productsData...',productData)
+            // console.log('productsData...',productData)
             setIsVisible(false)
         }
         else if (state.case === GET_PRODUCTS_FAILURE) {
@@ -61,11 +60,11 @@ export default function Listing() {
       },[state])
     return (
         <View>
-            <Loader visible={state.loading}/>
+            <Loader visible={isVisible}/>
             <ImageContainer image={loginBackground}/>
             <FlatList
                 data={productData}
-                keyExtractor={(item)=>item.id}
+                keyExtractor={(item)=>item._id}
                 renderItem={WineItem}
                 showsVerticalScrollIndicator={false}
                 ItemSeparatorComponent={seprator}

@@ -8,8 +8,8 @@ export default function API(variable, method, parameter, formdata, media) {
     if (formdata) {
 
         var headers = {
-            // 'Authorization': `Bearer ${AppConstant.token}`,
-            // "Content-Type": "multipart/form-data",
+            'Authorization': `Bearer ${AppConstant.token}`,
+            "Content-Type": "multipart/form-data",
             'Content-Type': 'application/json',
             // "X-Requested-With": "XMLHttpRequest",
             "Accept": "application/json"
@@ -48,10 +48,10 @@ export default function API(variable, method, parameter, formdata, media) {
                     status: resp.status,
                     body: res
                 }
-                console.log('APIresponse : ', JSON.stringify(data))
+                // console.log('APIresponse : ', JSON.stringify(data))
                 
 
-                if (variable === 'auth/login') {
+                if (variable === 'user/login') {
                     return data
                 }
                 else if (data.status === 401) {
